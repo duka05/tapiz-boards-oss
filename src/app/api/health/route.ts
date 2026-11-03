@@ -9,7 +9,8 @@ export async function GET() {
   let dbStatus: "ok" | "down" = "ok";
   try {
     await db.execute(sql`select 1`);
-  } catch {
+  } catch (e) {
+    console.error("HEALTH_DB_ERROR", e instanceof Error ? e.message : String(e));
     dbStatus = "down";
   }
   const healthy = dbStatus === "ok";
