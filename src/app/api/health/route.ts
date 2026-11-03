@@ -10,7 +10,8 @@ export async function GET() {
   try {
     await db.execute(sql`select 1`);
   } catch (e) {
-    console.error("HEALTH_DB_ERROR", e instanceof Error ? e.message : String(e));
+        const c = (e as { cause?: { code?: string; message?: string } })?.cause;
+    console.error("HEALTH_DB_CAUSE", c?.code, c?.message);
     dbStatus = "down";
   }
   const healthy = dbStatus === "ok";
